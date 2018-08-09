@@ -7,11 +7,17 @@ import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import com.android.volley.Response
-import com.android.volley.request.GsonRequest
-import com.android.volley.toolbox.Volley
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+
+private const val TAG = "MainActivity"
+
+private val matchesService by lazy {
+    MatchesService.create()
+}
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,24 +36,26 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadMatches() {
         Log.i(MainActivity::class.java.simpleName, "Loading matches ...")
-        val matchesRequest = GsonRequest<MatchesResponse>("http://5b59a29cf294400014c9b82a.mockapi.io/matches", MatchesResponse::class.java, emptyMap(),
-                Response.Listener<MatchesResponse> {
-                    Log.i(MainActivity::class.java.simpleName, "Matches loaded, recycler view init ...")
-                    initRecyclerView(it)
-                },
-                Response.ErrorListener {
-                    Log.e(MainActivity::class.java.simpleName, "Matches loading failed: ${it.localizedMessage}")
-                }
-        )
 
-        val requestQueue = Volley.newRequestQueue(this)
-        requestQueue.add(matchesRequest)
+        matchesService
+                .getMatches()
+                .enqueue(object : Callback<DomainModel.MatchesResponse> {
+                    override fun onResponse(call: Call<DomainModel.MatchesResponse>, response: Response<DomainModel.MatchesResponse>) {
+                        Log.i(TAG, "Matches loaded, recycler view init ...")
+                        initRecyclerView(response.body()!!)
+                    }
+
+                    override fun onFailure(call: Call<DomainModel.MatchesResponse>, t: Throwable) {
+                        Log.e(TAG, "Matches loading failed: ${t.localizedMessage}")
+                    }
+
+                })
     }
 
-    private fun initRecyclerView(response: MatchesResponse) {
+    private fun initRecyclerView(response: DomainModel.MatchesResponse) {
         recyclerView.adapter = RecyclerViewAdapter(response.matches, this)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        Log.i(MainActivity::class.java.simpleName, "Recycler view loaded, matches should be visible")
+        Log.i(TAG, "Recycler view loaded, matches should be visible")
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import java.time.format.DateTimeFormatter
 
-class RecyclerViewAdapter(private val matches: List<MatchItem>, private val context: Context) : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
+class RecyclerViewAdapter(private val matches: List<DomainModel.MatchItem>, private val context: Context) : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(context).inflate(android.R.layout.simple_list_item_2, parent, false))
@@ -21,7 +21,7 @@ class RecyclerViewAdapter(private val matches: List<MatchItem>, private val cont
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
         val details = matches[position].details
         holder?.tvMain?.text = "${details.homeTeamName} - ${details.awayTeamName}"
-        holder?.tvBottom?.text = details.startDate
+        holder?.tvBottom?.text = details.startDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
