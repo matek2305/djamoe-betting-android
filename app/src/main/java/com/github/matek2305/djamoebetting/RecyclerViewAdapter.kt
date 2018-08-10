@@ -26,6 +26,7 @@ class RecyclerViewAdapter(private val matches: List<MatchDomain.MatchListItem>, 
         holder?.matchTeamNamesTextView?.text = "${details.homeTeamName} - ${details.awayTeamName}"
         holder?.matchResultTextView?.text = if (result != null) "(${result.homeTeam}-${result.awayTeam})" else ""
         holder?.matchDateTextView?.text = details.startDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
+        holder?.matchStatusTextView?.text = matches[position].status
         holder?.userBetTextView?.text = if (bet != null) "${bet.homeTeam} - ${bet.awayTeam}" else "NO BET"
     }
 
@@ -33,6 +34,7 @@ class RecyclerViewAdapter(private val matches: List<MatchDomain.MatchListItem>, 
         val matchTeamNamesTextView = view.findViewById<TextView>(R.id.txt_match_teams)
         val matchResultTextView = view.findViewById<TextView>(R.id.txt_match_result)
         val matchDateTextView = view.findViewById<TextView>(R.id.txt_match_date)
+        val matchStatusTextView = view.findViewById<TextView>(R.id.txt_match_status)
         val userBetTextView = view.findViewById<TextView>(R.id.txt_user_bet)
     }
 
