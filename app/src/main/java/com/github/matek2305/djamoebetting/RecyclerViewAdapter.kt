@@ -21,8 +21,14 @@ class RecyclerViewAdapter(private val matches: List<MatchDomain.MatchListItem>, 
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
         val details = matches[position].details
         val bet = matches[position].bet
-        
-        holder?.matchTeamNamesTextView?.text = "${details.homeTeamName} - ${details.awayTeamName}"
+        val result = matches[position].result
+
+        holder?.matchTeamNamesTextView?.text =
+                if (result != null)
+                    "${details.homeTeamName} - ${details.awayTeamName} (${result.homeTeam}-${result.awayTeam})"
+                else
+                    "${details.homeTeamName} - ${details.awayTeamName}"
+
         holder?.matchDateTextView?.text = details.startDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
         holder?.userBetTextView?.text = if (bet != null) "${bet.homeTeam} - ${bet.awayTeam}" else "NO BET"
     }
