@@ -39,20 +39,20 @@ class MainActivity : AppCompatActivity() {
 
         matchesService
                 .getMatches()
-                .enqueue(object : Callback<DomainModel.MatchesResponse> {
-                    override fun onResponse(call: Call<DomainModel.MatchesResponse>, response: Response<DomainModel.MatchesResponse>) {
+                .enqueue(object : Callback<MatchDomain.MatchesResponse> {
+                    override fun onResponse(call: Call<MatchDomain.MatchesResponse>, response: Response<MatchDomain.MatchesResponse>) {
                         Log.i(TAG, "Matches loaded, recycler view init ...")
                         initRecyclerView(response.body()!!)
                     }
 
-                    override fun onFailure(call: Call<DomainModel.MatchesResponse>, t: Throwable) {
+                    override fun onFailure(call: Call<MatchDomain.MatchesResponse>, t: Throwable) {
                         Log.e(TAG, "Matches loading failed: ${t.localizedMessage}")
                     }
 
                 })
     }
 
-    private fun initRecyclerView(response: DomainModel.MatchesResponse) {
+    private fun initRecyclerView(response: MatchDomain.MatchesResponse) {
         recyclerView.adapter = RecyclerViewAdapter(response.matches, this)
         recyclerView.layoutManager = LinearLayoutManager(this)
         Log.i(TAG, "Recycler view loaded, matches should be visible")

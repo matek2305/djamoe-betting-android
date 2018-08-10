@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter
 interface MatchesService {
 
     @GET("/matches")
-    fun getMatches(): Call<DomainModel.MatchesResponse>
+    fun getMatches(): Call<MatchDomain.MatchesResponse>
 
     companion object {
         fun create(): MatchesService {

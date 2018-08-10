@@ -8,10 +8,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import java.time.format.DateTimeFormatter
 
-class RecyclerViewAdapter(private val matches: List<DomainModel.MatchItem>, private val context: Context) : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
+class RecyclerViewAdapter(private val matches: List<MatchDomain.MatchListItem>, private val context: Context) : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(context).inflate(android.R.layout.simple_list_item_2, parent, false))
+        return ViewHolder(LayoutInflater.from(context).inflate(R.layout.match_list_item, parent, false))
     }
 
     override fun getItemCount(): Int {
@@ -20,13 +20,13 @@ class RecyclerViewAdapter(private val matches: List<DomainModel.MatchItem>, priv
 
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
         val details = matches[position].details
-        holder?.tvMain?.text = "${details.homeTeamName} - ${details.awayTeamName}"
-        holder?.tvBottom?.text = details.startDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
+        holder?.MatchTeamNamesTextView?.text = "${details.homeTeamName} - ${details.awayTeamName}"
+        holder?.matchDateTextView?.text = details.startDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val tvMain = view.findViewById<TextView>(android.R.id.text1)
-        val tvBottom = view.findViewById<TextView>(android.R.id.text2)
+        val MatchTeamNamesTextView = view.findViewById<TextView>(R.id.txt_match_teams)
+        val matchDateTextView = view.findViewById<TextView>(R.id.txt_match_date)
     }
 
 }
